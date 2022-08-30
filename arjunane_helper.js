@@ -91,7 +91,42 @@ FormatDate.prototype.__setDate = function ()
     
     return result;
 }
+/**
+ * 
+ * @param {string} src required
+ * @param {string} fileName required
+ */
+function downloadImage(src, fileName)
+{
+    var isBase64 = false;
+    try {
+        window.atob(src);
+        isBase64 = true;
+    } catch(e) {
+        // something failed
 
+        // if you want to be specific and only catch the error which means
+        // the base 64 was invalid, then check for 'e.code === 5'.
+        // (because 'DOMException.INVALID_CHARACTER_ERR === 5')
+    }
+
+    if(typeof src !== 'string') throw Error("First parameter must be a STRING");
+
+    if(typeof fileName === 'undefined')
+    {
+        if(isBase64) fileName = "images";
+        else
+        {
+            fileName = src.split("/").pop();
+        }
+    }
+    var el = document.createElement("a");
+    el.setAttribute("href", src);
+    el.setAttribute("download", fileName);
+    document.body.appendChild(el);
+    el.click();
+    el.remove();
+}
 
 function rupiah(angka)
 {
